@@ -1,0 +1,71 @@
+# Render Blueprint for Veil's realtime and media services.
+# The Next.js web app runs on Vercel (https://secure-chat-phi-five.vercel.app).
+# Secrets live in the "veil-secrets" environment group, created in the Render dashboard
+# (or via the API), never in this file.
+
+previews:
+  generation: off
+
+services:
+  - type: web
+    name: veil-chat-ws
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --filter @veil/chat-ws...
+    startCommand: pnpm --filter @veil/chat-ws start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - fromGroup: veil-secrets
+
+  - type: web
+    name: veil-call-signaling
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --filter @veil/call-signaling...
+    startCommand: pnpm --filter @veil/call-signaling start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - fromGroup: veil-secrets
+
+  - type: web
+    name: veil-media-worker
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --filter @veil/media-worker...
+    startCommand: pnpm --filter @veil/media-worker start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - fromGroup: veil-secrets
+
+  - type: web
+    name: veil-link-scraper
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --filter @veil/link-scraper...
+    startCommand: pnpm --filter @veil/link-scraper start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: LINK_PUBLIC_URL
+        value: /svc/link
+      - fromGroup: veil-secrets
+
+  # Background workers have no free plan on Render (Starter is about $7/month).
+  - type: worker
+    name: veil-push-service
+    runtime: node
+    plan: starter
+    region: singapore
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --filter @veil/push-service...
+    startCommand: pnpm --filter @veil/push-service start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - fromGroup: veil-secrets
