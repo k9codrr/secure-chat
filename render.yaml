@@ -12,8 +12,9 @@ services:
     runtime: node
     plan: free
     region: singapore
-    buildCommand: corepack enable && pnpm install --frozen-lockfile --filter @veil/chat-ws...
-    startCommand: pnpm --filter @veil/chat-ws start
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --filter @veil/chat-ws... --filter @veil/push-service...
+    # push-service runs in the same free instance as chat-ws (workers have no free plan).
+    startCommand: pnpm --filter @veil/push-service start & pnpm --filter @veil/chat-ws start
     envVars:
       - key: NODE_VERSION
         value: "22"
@@ -57,15 +58,3 @@ services:
         value: /svc/link
       - fromGroup: veil-secrets
 
-  # Background workers have no free plan on Render (Starter is about $7/month).
-  - type: worker
-    name: veil-push-service
-    runtime: node
-    plan: starter
-    region: singapore
-    buildCommand: corepack enable && pnpm install --frozen-lockfile --filter @veil/push-service...
-    startCommand: pnpm --filter @veil/push-service start
-    envVars:
-      - key: NODE_VERSION
-        value: "22"
-      - fromGroup: veil-secrets
