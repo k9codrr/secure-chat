@@ -1,0 +1,409 @@
+@import "tailwindcss";
+@source "./";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Veil design tokens.
+ * Mode (light/dark) sets the neutral surfaces; the palette (data-palette on <html>) sets the
+ * accent, chat bubbles and wallpaper tint. Palettes only define --p-* inputs, so every palette
+ * works in both modes.
+ */
+:root {
+  --font-ui: "Geist Variable", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Hiragino Sans", "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --font-code: "Geist Mono Variable", ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Palette inputs: Aurora (default). */
+  --p-accent-light: #2f6fdf;
+  --p-accent-dark: #3e8bf8;
+  --p-contrast-light: #ffffff;
+  --p-contrast-dark: #ffffff;
+  --p-bubble-1: #6a5cff;
+  --p-bubble-2: #9440ec;
+  --p-bubble-text: #ffffff;
+  --p-wall-a: #5b34b8;
+  --p-wall-b: #2350c4;
+
+  /* Light mode. */
+  --bg: #ffffff;
+  --grouped: #f2f2f7;
+  --card: #ffffff;
+  --surface: #f2f2f7;
+  --surface-2: #e5e5ea;
+  --elevated: #ffffff;
+  --border: rgba(60, 60, 67, 0.14);
+  --text: #000000;
+  --muted: #6c6c71;
+  --subtle: #8a8a8f;
+  --accent: var(--p-accent-light);
+  --accent-contrast: var(--p-contrast-light);
+  --bubble-in: #ffffff;
+  --bubble-in-text: #000000;
+  --danger: #d93025;
+  --warning: #c27400;
+  --online: #1f9d4c;
+  --chat-bg: #e7e3f1;
+  --wall-strength: 0.14;
+  --glass: rgba(250, 250, 252, 0.66);
+  --glass-strong: rgba(250, 250, 252, 0.86);
+  --glass-edge: rgba(255, 255, 255, 0.9);
+  --glass-line: rgba(0, 0, 0, 0.07);
+  --glass-shine: rgba(255, 255, 255, 0.55);
+  --glass-shadow: 0 8px 28px -10px rgba(30, 30, 60, 0.28);
+  /* Liquid glass (components/liquid-glass.tsx): clear white tint, white top edge, soft drop. */
+  --lg-tint: rgba(255, 255, 255, 0.12);
+  --lg-tint-strong: rgba(255, 255, 255, 0.55);
+  --lg-rim: rgba(255, 255, 255, 0.32);
+  --lg-glow: rgba(255, 255, 255, 0.14);
+  --lg-pill: rgba(255, 255, 255, 0.35);
+  --lg-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 24px 60px -16px rgba(0, 0, 0, 0.3);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #000000;
+  --grouped: #000000;
+  --card: #1c1c1e;
+  --surface: #1c1c1e;
+  --surface-2: #2c2c2e;
+  --elevated: #1c1c1e;
+  --border: rgba(255, 255, 255, 0.09);
+  --text: #ffffff;
+  --muted: #8e8e93;
+  --subtle: #6e6e73;
+  --accent: var(--p-accent-dark);
+  --accent-contrast: var(--p-contrast-dark);
+  --bubble-in: #262629;
+  --bubble-in-text: #ffffff;
+  --danger: #ff453a;
+  --warning: #ff9f0a;
+  --online: #30d158;
+  --chat-bg: #07070b;
+  --wall-strength: 0.3;
+  --glass: rgba(36, 36, 40, 0.58);
+  --glass-strong: rgba(30, 30, 34, 0.84);
+  --glass-edge: rgba(255, 255, 255, 0.16);
+  --glass-line: rgba(255, 255, 255, 0.07);
+  --glass-shine: rgba(255, 255, 255, 0.07);
+  --glass-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.65);
+  --lg-tint: rgba(255, 255, 255, 0.08);
+  --lg-tint-strong: rgba(30, 30, 34, 0.6);
+  --lg-rim: rgba(255, 255, 255, 0.13);
+  --lg-glow: rgba(255, 255, 255, 0.06);
+  --lg-pill: rgba(255, 255, 255, 0.14);
+  --lg-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 28px 70px -12px rgba(0, 0, 0, 0.85);
+  color-scheme: dark;
+}
+
+:root[data-palette="ocean"] {
+  --p-accent-light: #1a73b8;
+  --p-accent-dark: #1a8fd0;
+  --p-bubble-1: #2a6fe0;
+  --p-bubble-2: #15749e;
+  --p-wall-a: #1460a0;
+  --p-wall-b: #0d7a7f;
+}
+:root[data-palette="emerald"] {
+  --p-accent-light: #157f4e;
+  --p-accent-dark: #1e9e5e;
+  --p-bubble-1: #0f7f5a;
+  --p-bubble-2: #137a52;
+  --p-wall-a: #0f6a4c;
+  --p-wall-b: #2a7a2a;
+}
+:root[data-palette="sunset"] {
+  --p-accent-light: #c0501a;
+  --p-accent-dark: #e8641c;
+  --p-bubble-1: #d43a45;
+  --p-bubble-2: #b4521a;
+  --p-wall-a: #9a3424;
+  --p-wall-b: #9a5a14;
+}
+:root[data-palette="rose"] {
+  --p-accent-light: #c4316b;
+  --p-accent-dark: #f0447f;
+  --p-bubble-1: #d6336f;
+  --p-bubble-2: #b5379c;
+  --p-wall-a: #9a2458;
+  --p-wall-b: #6e2490;
+}
+:root[data-palette="gold"] {
+  --p-accent-light: #856629;
+  --p-accent-dark: #d6b77f;
+  --p-contrast-dark: #1a1408;
+  --p-bubble-1: #d4b47a;
+  --p-bubble-2: #e8cf9f;
+  --p-bubble-text: #1a1408;
+  --p-wall-a: #6e5426;
+  --p-wall-b: #4a3a1c;
+}
+:root[data-palette="graphite"] {
+  --p-accent-light: #48484d;
+  --p-accent-dark: #d1d1d6;
+  --p-contrast-dark: #000000;
+  --p-bubble-1: #48484a;
+  --p-bubble-2: #5a5a5e;
+  --p-wall-a: #3a3a3e;
+  --p-wall-b: #2a2a30;
+}
+
+:root {
+  --accent-strong: color-mix(in srgb, var(--accent) 85%, var(--text));
+  --accent-soft: color-mix(in srgb, var(--accent) 15%, transparent);
+  --bubble-out: var(--p-bubble-1);
+  --bubble-out-text: var(--p-bubble-text);
+  --bubble-out-gradient: linear-gradient(160deg, var(--p-bubble-1), var(--p-bubble-2));
+  --tick-read: var(--p-bubble-text);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-grouped: var(--grouped);
+  --color-card: var(--card);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-elevated: var(--elevated);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-bubble-out: var(--bubble-out);
+  --color-bubble-out-text: var(--bubble-out-text);
+  --color-bubble-in: var(--bubble-in);
+  --color-bubble-in-text: var(--bubble-in-text);
+  --color-tick-read: var(--tick-read);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-online: var(--online);
+  --color-chat: var(--chat-bg);
+  --shadow-soft: var(--shadow);
+  --shadow-float: var(--shadow-lg);
+  --font-sans: var(--font-ui);
+  --font-display: var(--font-ui);
+  --font-mono: var(--font-code);
+  --radius-bubble: 18px;
+  --radius-modal: 28px;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  letter-spacing: -0.011em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+body {
+  transition: background-color 300ms var(--ease-ios), color 300ms var(--ease-ios);
+}
+
+/* Set for a moment while the palette or mode changes, so colours cross-fade instead of snapping. */
+html.theme-anim *,
+html.theme-anim *::before,
+html.theme-anim *::after {
+  transition: background-color 380ms var(--ease-ios), border-color 380ms var(--ease-ios), color 380ms var(--ease-ios), fill 380ms var(--ease-ios), stroke 380ms var(--ease-ios) !important;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-2) transparent;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* In a layer so Tailwind utilities passed through className can still override these. */
+@layer components {
+  /* Liquid glass: a tinted translucent body, a bright top edge, a hairline and a soft drop. */
+  .glass {
+    background: linear-gradient(180deg, var(--glass-shine), transparent 55%), var(--glass);
+    -webkit-backdrop-filter: blur(22px) saturate(185%);
+    backdrop-filter: blur(22px) saturate(185%);
+    box-shadow: inset 0 1px 0 var(--glass-edge), inset 0 0 0 0.5px var(--glass-line), var(--glass-shadow);
+  }
+  .glass-strong {
+    background: linear-gradient(180deg, var(--glass-shine), transparent 55%), var(--glass-strong);
+    -webkit-backdrop-filter: blur(30px) saturate(190%);
+    backdrop-filter: blur(30px) saturate(190%);
+    box-shadow: inset 0 1px 0 var(--glass-edge), inset 0 0 0 0.5px var(--glass-line), var(--shadow-lg);
+  }
+  /* Liquid glass with real refraction (Chrome / Android): the look of the original component. */
+  .glass[data-refract="true"] {
+    background: var(--lg-tint);
+    box-shadow: var(--lg-shadow), inset 0 0 0 1px var(--lg-rim), inset 0 0 12px var(--lg-glow);
+  }
+  .glass-strong[data-refract="true"] {
+    background: var(--lg-tint-strong);
+    box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--lg-rim);
+  }
+  /*
+   * iPhone / Safari / Firefox can't refract, so the same clear glass gets its edge
+   * from an even 1px rim on all four sides and a soft inner glow.
+   */
+  .glass[data-refract="fallback"] {
+    background: var(--lg-tint);
+    -webkit-backdrop-filter: blur(5px) saturate(1.85) brightness(1.02);
+    backdrop-filter: blur(5px) saturate(1.85) brightness(1.02);
+    box-shadow: var(--lg-shadow), inset 0 0 0 1px var(--lg-rim), inset 0 0 14px var(--lg-glow);
+  }
+  .glass-strong[data-refract="fallback"] {
+    background: var(--lg-tint-strong);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    backdrop-filter: blur(24px) saturate(1.8);
+    box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--lg-rim);
+  }
+  /* Selected tab inside a liquid-glass bar: a brighter drop of clear glass. */
+  [data-refract] .glass-pill {
+    background: var(--lg-pill);
+    box-shadow: inset 0 0 0 1px var(--lg-rim), inset 0 0 8px var(--lg-glow);
+  }
+  /* The sliding "selected" lozenge inside glass bars. */
+  .glass-pill {
+    background: color-mix(in srgb, var(--text) 9%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text) 8%, transparent);
+  }
+  .accent-fill {
+    background-color: var(--accent);
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 60%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 18px -6px color-mix(in srgb, var(--accent) 70%, transparent);
+  }
+  .accent-fill-float {
+    background-color: var(--accent);
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 60%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 26px -8px color-mix(in srgb, var(--accent) 80%, transparent);
+  }
+  .bubble-out {
+    background-color: var(--p-bubble-1);
+    background-image: var(--bubble-out-gradient);
+  }
+  .pressable {
+    transition: transform 380ms var(--ease-spring), background-color 200ms ease, opacity 200ms ease;
+  }
+  .pressable:active {
+    transform: scale(0.94);
+    transition-duration: 120ms;
+  }
+  .brand-glow {
+    background-image: radial-gradient(ellipse 90% 55% at 50% -8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+  }
+}
+
+/*
+ * Chat wallpaper: a deep two-tone wash with a doodle pattern lit by the same tones.
+ * It sits behind the message list as its own layer, so it stays still while messages scroll.
+ */
+.chat-wallpaper {
+  background-color: var(--chat-bg);
+  background-image: radial-gradient(ellipse 120% 70% at 0% 0%, color-mix(in srgb, var(--p-wall-a) calc(var(--wall-strength) * 100%), transparent), transparent 70%),
+    radial-gradient(ellipse 120% 70% at 100% 100%, color-mix(in srgb, var(--p-wall-b) calc(var(--wall-strength) * 100%), transparent), transparent 70%);
+}
+.chat-wallpaper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(160deg, var(--p-wall-a), var(--p-wall-b));
+  opacity: calc(var(--wall-strength) * 1.35);
+  -webkit-mask-image: var(--doodles);
+  mask-image: var(--doodles);
+  -webkit-mask-size: 300px 300px;
+  mask-size: 300px 300px;
+}
+:root {
+  --doodles: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M38 50c-9-7-14-11-14-17a7 7 0 0 1 14-3 7 7 0 0 1 14 3c0 6-5 10-14 17z'/%3E%3Cpath d='M126 16l4 9 10 1-7 7 2 10-9-5-9 5 2-10-7-7 10-1z'/%3E%3Cpath d='M206 26h32a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6h-20l-10 8v-8h-2a6 6 0 0 1-6-6V32a6 6 0 0 1 6-6z'/%3E%3Cpath d='M266 104h22v17h-22zM270 104v-6a7 7 0 0 1 14 0v6'/%3E%3Ccircle cx='60' cy='134' r='5'/%3E%3Cpath d='M65 134v-24l15-4v22'/%3E%3Ccircle cx='75' cy='128' r='5'/%3E%3Cpath d='M136 136h30a8 8 0 0 0-2-16 11 11 0 0 0-21-3 8 8 0 0 0-7 19z'/%3E%3Cpath d='M222 118c2 10 6 14 16 16-10 2-14 6-16 16-2-10-6-14-16-16 10-2 14-6 16-16z'/%3E%3Ccircle cx='34' cy='214' r='13'/%3E%3Cpath d='M28 218a8 8 0 0 0 12 0M29 209h.1M39 209h.1'/%3E%3Cpath d='M108 200h28v19h-28zM108 201l14 10 14-10'/%3E%3Cpath d='M214 200a14 14 0 1 0 12 22 11 11 0 0 1-12-22z'/%3E%3Cpath d='M262 228c0-14 10-22 24-22 0 14-10 22-24 22zM262 228l14-14'/%3E%3Ccircle cx='62' cy='278' r='6'/%3E%3Cpath d='M68 278h22M84 278v6M90 278v5'/%3E%3Cpath d='M150 268h18v10a9 9 0 0 1-18 0zM168 271h4a4 4 0 0 1 0 8h-4M154 262c0-3 3-3 3-6M162 262c0-3 3-3 3-6'/%3E%3Cpath d='M236 270h26v18h-26zM249 270v18M236 277h26M249 270c-3-7-11-7-9-1M249 270c3-7 11-7 9-1'/%3E%3Ccircle cx='170' cy='70' r='2'/%3E%3Ccircle cx='96' cy='78' r='2'/%3E%3Ccircle cx='280' cy='160' r='2'/%3E%3Ccircle cx='190' cy='176' r='2'/%3E%3Ccircle cx='20' cy='160' r='2'/%3E%3Ccircle cx='120' cy='252' r='2'/%3E%3C/svg%3E");
+}
+
+/* Doodle pattern over a chosen gradient/colour wallpaper (components/wallpaper.tsx). */
+.wall-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgb(0 0 0 / 0.09);
+  -webkit-mask-image: var(--doodles);
+  mask-image: var(--doodles);
+  -webkit-mask-size: 300px 300px;
+  mask-size: 300px 300px;
+}
+.wall-pattern-light {
+  background: rgb(255 255 255 / 0.08);
+}
+
+/* Fades the top edge of the message list where it meets the floating header. */
+.fade-top {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 18px);
+  mask-image: linear-gradient(to bottom, transparent 0, black 18px);
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.secure-blur {
+  filter: blur(28px) saturate(1.2);
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
+.animate-shake {
+  animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.86); filter: blur(4px); }
+  to { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes typing-dot {
+  0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass[data-refract="fallback"],
+  .glass-strong[data-refract="fallback"] {
+    background: var(--glass-strong);
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
+  }
+}

@@ -1,0 +1,34 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Show the incoming-call screen over the lock screen (Android 14+ may ask the user to allow it). -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <!-- Replaces @capacitor/push-notifications' service (removed in the app manifest) and forwards
+             every non-call push to it, so normal notifications keep working. -->
+        <service
+            android:name="app.veil.callui.CallMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="app.veil.callui.IncomingCallActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:taskAffinity="app.veil.callui.incoming"
+            android:theme="@android:style/Theme.Material.NoActionBar" />
+
+        <receiver
+            android:name="app.veil.callui.CallActionReceiver"
+            android:exported="false" />
+    </application>
+</manifest>

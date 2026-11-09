@@ -1,0 +1,14 @@
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "@veil/ui/styles.css";
+
+html,
+body {
+  user-select: none;
+  -webkit-user-select: none;
+}
+textarea,
+input {
+  user-select: text;
+  -webkit-user-select: text;
+}

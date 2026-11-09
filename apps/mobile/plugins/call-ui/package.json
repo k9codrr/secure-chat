@@ -1,0 +1,13 @@
+{
+  "name": "@veil/call-ui",
+  "version": "1.0.0",
+  "description": "Native incoming-call screen: Android full-screen call notification (Answer/Decline over the lock screen), iOS PushKit + CallKit.",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": ["android/src", "android/build.gradle", "ios/Sources", "Package.swift", "VeilCallUi.podspec", "src"],
+  "capacitor": {
+    "ios": { "src": "ios" },
+    "android": { "src": "android" }
+  },
+  "peerDependencies": { "@capacitor/core": "^6.0.0" }
+}
