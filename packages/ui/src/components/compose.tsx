@@ -449,7 +449,13 @@ export function ComposeBar({ chat }: { chat: LocalChat }) {
                 animate={{ scale: 1, rotate: 0, opacity: 1 }}
                 exit={{ scale: 0.4, rotate: 90, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 520, damping: 30 }}
-                onClick={submit}
+                // Don't let the button take focus from the text box, or the phone keyboard closes on send.
+                onPointerDown={(e) => e.preventDefault()}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  ta.current?.focus();
+                  void submit();
+                }}
                 className="accent-fill-float absolute inset-0 flex items-center justify-center rounded-full text-accent-contrast"
               >
                 {edit ? <Square className="h-5 w-5 fill-current" /> : <Send className="ml-0.5 h-5 w-5" />}

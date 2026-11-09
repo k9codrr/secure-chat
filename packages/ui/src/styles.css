@@ -207,6 +207,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
+  overflow: hidden;
 }
 
 body {

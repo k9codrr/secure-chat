@@ -286,7 +286,33 @@ function JoinDialog({ token, onClose }: { token: string | null; onClose: () => v
 
 /* ------------------------------ root ------------------------------ */
 
+/**
+ * Keeps the app exactly as tall as the visible screen. iOS Safari doesn't shrink the page for the
+ * keyboard and can leave it scrolled afterwards, which cut off the bottom of the app on iPhones.
+ */
+function useVisibleHeight() {
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const root = document.documentElement;
+    const update = () => {
+      root.style.setProperty("--app-h", `${Math.round(vv.height)}px`);
+      if (window.scrollY !== 0) window.scrollTo(0, 0);
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    window.addEventListener("orientationchange", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+      window.removeEventListener("orientationchange", update);
+    };
+  }, []);
+}
+
 function Root() {
+  useVisibleHeight();
   const [phase, setPhase] = useState<Phase>("booting");
   const [locked, setLocked] = useState(() => typeof window !== "undefined" && getLockSettings().enabled);
   const [shield, setShield] = useState(false);
@@ -458,7 +484,7 @@ function Root() {
   const lockActive = locked && getLockSettings().enabled && phase !== "signed-out";
 
   return (
-    <div className="h-[100dvh] w-full overflow-hidden bg-bg text-text">
+    <div className="fixed inset-x-0 top-0 h-[var(--app-h,100dvh)] w-full overflow-hidden bg-bg text-text">
       {lockActive ? <AppLockScreen onUnlock={() => setLocked(false)} /> : content}
       {shield && !lockActive && phase === "ready" && (
         <div className="fixed inset-0 z-[90] flex items-center justify-center bg-bg">
